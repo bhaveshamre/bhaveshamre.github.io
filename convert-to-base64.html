@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert Photo to Base64</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input, button {
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .output {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        .copy-btn {
+            background: #28a745;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📸 Photo to Base64 Converter</h1>
+        <p>Select your profile photo to convert it to Base64 for embedding in HTML:</p>
+
+        <input type="file" id="photoInput" accept="image/*">
+        <button onclick="convertPhoto()">Convert to Base64</button>
+
+        <div id="output" class="output" style="display:none;">
+            <h3>Base64 Data URL:</h3>
+            <textarea id="base64Output" readonly></textarea>
+            <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+            <p style="color: #666; font-size: 12px; margin-top: 10px;">
+                ✅ Copy this data URL and paste it into the index.html file
+            </p>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #e7f3ff; border-radius: 5px;">
+            <h3>How to use:</h3>
+            <ol>
+                <li>Click "Choose File" and select your profile photo</li>
+                <li>Click "Convert to Base64"</li>
+                <li>Copy the generated data URL</li>
+                <li>Open index.html and find the img tag with src="images/profile.jpg"</li>
+                <li>Replace it with: &lt;img src="[PASTE_HERE]" alt="..."&gt;</li>
+                <li>Save and refresh your portfolio</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function convertPhoto() {
+            const input = document.getElementById('photoInput');
+            if (!input.files || !input.files[0]) {
+                alert('Please select a file');
+                return;
+            }
+
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const base64 = e.target.result;
+                document.getElementById('base64Output').value = base64;
+                document.getElementById('output').style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function copyToClipboard() {
+            const textarea = document.getElementById('base64Output');
+            textarea.select();
+            document.execCommand('copy');
+            alert('✅ Copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
